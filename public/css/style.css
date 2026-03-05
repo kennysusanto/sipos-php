@@ -1,0 +1,395 @@
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    --bg: #f6f8fa;
+    --bg-accent: #eaeef2;
+    --surface: #ffffff;
+    --surface-muted: #f6f8fa;
+    --text: #1f2328;
+    --text-muted: #59636e;
+    --border: #d0d7de;
+    --primary: #1f883d;
+    --primary-hover: #1a7f37;
+    --link: #0969da;
+    --shadow: 0 8px 24px rgba(140, 149, 159, 0.2);
+}
+
+[data-theme="dark"] {
+    --bg: #0d1117;
+    --bg-accent: #161b22;
+    --surface: #161b22;
+    --surface-muted: #21262d;
+    --text: #c9d1d9;
+    --text-muted: #8b949e;
+    --border: #30363d;
+    --primary: #238636;
+    --primary-hover: #2ea043;
+    --link: #58a6ff;
+    --shadow: 0 8px 24px rgba(1, 4, 9, 0.55);
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    color: var(--text);
+    background: var(--bg);
+}
+
+a {
+    color: var(--link);
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+.theme-switch {
+    position: relative;
+    display: inline-flex;
+    width: 52px;
+    height: 30px;
+    flex-shrink: 0;
+}
+
+.theme-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.theme-slider {
+    width: 100%;
+    height: 100%;
+    border-radius: 999px;
+    background: var(--surface-muted);
+    border: 1px solid var(--border);
+    position: relative;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.theme-slider::before {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--surface);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+    transition: transform 0.2s ease;
+}
+
+.theme-switch input:checked + .theme-slider::before {
+    transform: translateX(22px);
+}
+
+.theme-switch input:checked + .theme-slider {
+    background: rgba(31, 136, 61, 0.35);
+}
+
+/* Login */
+.login-page {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    background: radial-gradient(circle at 20% 10%, rgba(88, 166, 255, 0.22), transparent 35%),
+        radial-gradient(circle at 80% 20%, rgba(31, 136, 61, 0.2), transparent 35%),
+        var(--bg);
+    padding: 20px;
+}
+
+.login-theme-toggle {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+}
+
+.github-login-box {
+    width: 100%;
+    max-width: 360px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    padding: 28px;
+}
+
+.github-login-logo {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 16px;
+}
+
+.github-login-logo svg {
+    width: 46px;
+    height: 46px;
+    fill: var(--text);
+}
+
+.sipos-logo-mark {
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    background: var(--primary);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.25rem;
+}
+
+.github-login-box h2 {
+    text-align: center;
+    margin: 0 0 20px;
+    font-size: 1.35rem;
+    color: var(--text);
+}
+
+.github-login-box label {
+    display: block;
+    font-size: 0.9rem;
+    margin: 0 0 8px;
+    color: var(--text);
+}
+
+.github-login-box input {
+    width: 100%;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+    border-radius: 6px;
+    padding: 10px 12px;
+    margin-bottom: 14px;
+}
+
+.github-login-box input:focus {
+    outline: 2px solid rgba(9, 105, 218, 0.35);
+    border-color: var(--link);
+}
+
+.github-login-box button {
+    width: 100%;
+    border: 0;
+    background: var(--primary);
+    color: #fff;
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.github-login-box button:hover {
+    background: var(--primary-hover);
+}
+
+.github-login-box .error {
+    margin: 0 0 14px;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #cf222e;
+    background: rgba(207, 34, 46, 0.12);
+    color: #cf222e;
+    font-size: 0.9rem;
+}
+
+.github-login-footer {
+    margin-top: 14px;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+/* Dashboard */
+.dashboard-wrapper {
+    min-height: 100vh;
+    display: flex;
+    background: var(--bg);
+}
+
+.sidebar {
+    width: 250px;
+    border-right: 1px solid var(--border);
+    background: var(--surface);
+    padding: 24px 16px;
+}
+
+.sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 20px;
+}
+
+.sidebar-brand h2 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.sidebar-brand-mark {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    background: var(--primary);
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+
+.sidebar ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.sidebar li a {
+    display: block;
+    text-decoration: none;
+    color: var(--text);
+    padding: 10px 12px;
+    border-radius: 6px;
+}
+
+.sidebar li a:hover {
+    background: var(--surface-muted);
+}
+
+.sidebar li a.active {
+    background: var(--surface-muted);
+    font-weight: 600;
+}
+
+.main-content {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.topbar {
+    height: 64px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+}
+
+.topbar .title {
+    font-size: 1.15rem;
+    font-weight: 600;
+}
+
+.topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.profile-menu {
+    position: relative;
+}
+
+.profile-trigger {
+    width: 38px;
+    height: 38px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--surface-muted);
+    color: var(--text);
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.profile-dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    min-width: 170px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    padding: 6px;
+    display: none;
+    z-index: 100;
+}
+
+.profile-dropdown.is-open {
+    display: block;
+}
+
+.profile-dropdown a {
+    display: block;
+    color: var(--text);
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 0.92rem;
+}
+
+.profile-dropdown a:hover {
+    background: var(--surface-muted);
+}
+
+.content {
+    padding: 24px;
+}
+
+.dashboard-cards {
+    margin-top: 16px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+}
+
+.dashboard-card {
+    border: 1px solid var(--border);
+    background: var(--surface);
+    border-radius: 10px;
+    padding: 16px;
+}
+
+.card-title {
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    font-size: 0.88rem;
+}
+
+.card-value {
+    font-size: 1.6rem;
+    font-weight: 700;
+}
+
+.users-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+.users-table th,
+.users-table td {
+    border: 1px solid var(--border);
+    padding: 10px 12px;
+    text-align: left;
+}
+
+.users-table thead th {
+    background: var(--surface-muted);
+    font-weight: 600;
+}
+
