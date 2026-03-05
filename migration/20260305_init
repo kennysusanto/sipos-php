@@ -1,22 +1,9 @@
 CREATE DATABASE `testing-github-copilot` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-
+USE `testing-github-copilot`;
 CREATE TABLE `user` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `username` varchar(45) DEFAULT NULL,
-  `role` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-INSERT INTO `testing-github-copilot`.`user` (`username`,`role`) VALUES ('admin', 'admin');
-
-ALTER TABLE `testing-github-copilot`.`user` 
-ADD COLUMN `password` VARCHAR(255) NOT NULL AFTER `role`,
-CHANGE COLUMN `username` `username` VARCHAR(45) NOT NULL ,
-CHANGE COLUMN `role` `role` VARCHAR(45) NOT NULL ;
-
-UPDATE `testing-github-copilot`.`user`
-SET
-`username` = 'admin',
-`role` = 'admin',
-`password` = 'password'
-WHERE `id` = 1;
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `username` VARCHAR(100) NOT NULL UNIQUE,
+  `password` VARCHAR(255) NOT NULL,
+  `role` VARCHAR(50) NOT NULL DEFAULT 'user'
+);
+INSERT INTO `testing-github-copilot`.`user` (`username`,`role`,`password`) VALUES ('admin', 'admin','password');
