@@ -1,18 +1,25 @@
 <?php
 $activePage = $activePage ?? '';
 $currentRole = $_SESSION['role'] ?? 'user';
+$currentTenantName = $_SESSION['tenant_name'] ?? null;
 
 $menuItems = [
     ['key' => 'dashboard', 'label' => 'Home', 'href' => '/dashboard'],
 ];
 
 if ($currentRole === 'admin') {
+    
+    if ($currentTenantName == 'master') {
+        $menuItems[] = ['key' => 'tenants', 'label' => 'Tenants', 'href' => '/tenants'];
+    }
     $menuItems[] = ['key' => 'users', 'label' => 'Users', 'href' => '/users'];
 }
 
-$menuItems[] = ['key' => 'profile', 'label' => 'Profile', 'href' => '/profile'];
+$menuItems[] = ['key' => 'menuitems', 'label' => 'Menu Items', 'href' => '/menuitems'];
+$menuItems[] = ['key' => 'bills', 'label' => 'Bills', 'href' => '/bills'];
+// $menuItems[] = ['key' => 'profile', 'label' => 'Profile', 'href' => '/profile'];
 $menuItems[] = ['key' => 'settings', 'label' => 'Settings', 'href' => '#'];
-$menuItems[] = ['key' => 'logout', 'label' => 'Logout', 'href' => '/logout'];
+// $menuItems[] = ['key' => 'logout', 'label' => 'Logout', 'href' => '/logout'];
 ?>
 <aside class="sidebar">
     <div class="sidebar-brand">

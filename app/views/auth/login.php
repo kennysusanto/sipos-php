@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Sign in to SIPOS</title>
+    <?php require __DIR__ . '/../components/theme-init.php'; ?>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body class="login-page">

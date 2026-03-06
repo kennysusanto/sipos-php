@@ -22,6 +22,8 @@ class AuthController extends Controller
             if ($authenticatedUser) {
                 $_SESSION['user'] = $authenticatedUser['username'] ?? $username;
                 $_SESSION['role'] = $authenticatedUser['role'] ?? 'user';
+                $_SESSION['tenant_id'] = $authenticatedUser['tenant_id'] ?? null;
+                $_SESSION['tenant_name'] = $authenticatedUser['tenant_name'] ?? null;
                 header('Location: /dashboard');
                 exit;
             } else {

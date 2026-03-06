@@ -9,6 +9,7 @@ $contentData = $contentData ?? [];
 <head>
     <meta charset="UTF-8">
     <title><?= htmlspecialchars($layoutTitle) ?></title>
+    <?php require __DIR__ . '/../components/theme-init.php'; ?>
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
 </head>

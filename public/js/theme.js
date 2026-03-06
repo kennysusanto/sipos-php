@@ -11,8 +11,10 @@
         });
     };
 
-    const savedTheme = localStorage.getItem(STORAGE_KEY) || 'light';
-    applyTheme(savedTheme);
+    const savedTheme = localStorage.getItem(STORAGE_KEY);
+    const preferredTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    const initialTheme = savedTheme === 'dark' || savedTheme === 'light' ? savedTheme : preferredTheme;
+    applyTheme(initialTheme);
 
     document.querySelectorAll('#theme-toggle').forEach((toggleInput) => {
         toggleInput.addEventListener('change', () => {
