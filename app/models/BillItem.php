@@ -19,7 +19,7 @@ class BillItem extends Model
             return [];
         }
 
-        $statement = $connection->prepare('SELECT bi.id, bi.bill_id, bi.menuitem_id, m.display_name AS menuitem_display_name, bi.quantity, bi.created_at, bi.updated_at FROM `billitem` bi INNER JOIN `menuitem` m ON m.id = bi.menuitem_id WHERE bi.bill_id = :bill_id AND bi.deleted_at IS NULL ORDER BY bi.id DESC');
+        $statement = $connection->prepare('SELECT bi.id, bi.bill_id, bi.menuitem_id, m.display_name AS menuitem_display_name, m.price AS menuitem_price, bi.quantity, bi.created_at, bi.updated_at FROM `billitem` bi INNER JOIN `menuitem` m ON m.id = bi.menuitem_id WHERE bi.bill_id = :bill_id AND bi.deleted_at IS NULL ORDER BY bi.id DESC');
         $statement->execute(['bill_id' => $billId]);
         return $statement->fetchAll();
     }

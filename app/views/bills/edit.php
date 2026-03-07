@@ -15,6 +15,9 @@
         <label for="table_id">Table ID (optional)</label>
         <input type="number" id="table_id" name="table_id" min="1" step="1" value="<?= htmlspecialchars((string)($bill['table_id'] ?? '')) ?>">
 
+        <label for="note">Note (optional)</label>
+        <input type="text" id="note" name="note" maxlength="255" value="<?= htmlspecialchars((string)($bill['note'] ?? '')) ?>">
+
         <div class="form-actions">
             <button class="btn btn-primary" type="submit">Update Bill</button>
             <a class="btn btn-secondary" href="/bills">Cancel</a>

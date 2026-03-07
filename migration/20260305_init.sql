@@ -70,6 +70,7 @@ CREATE TABLE IF NOT EXISTS `menuitem` (
 CREATE TABLE IF NOT EXISTS `bill` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
   `table_id` INT NULL,
+  `note` VARCHAR(255) NULL,
   `created_at` DATETIME NOT NULL,
   `updated_at` DATETIME NULL,
   `deleted_at` DATETIME NULL

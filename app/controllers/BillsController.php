@@ -36,7 +36,8 @@ class BillsController extends Controller
             'contentData' => [
                 'error' => $_GET['error'] ?? '',
                 'old' => [
-                    'table_id' => $_GET['table_id'] ?? ''
+                    'table_id' => $_GET['table_id'] ?? '',
+                    'note' => $_GET['note'] ?? ''
                 ]
             ]
         ]);
@@ -50,16 +51,23 @@ class BillsController extends Controller
         }
 
         $tableIdRaw = trim((string)($_POST['table_id'] ?? ''));
+        $noteRaw = trim((string)($_POST['note'] ?? ''));
         $tableId = $tableIdRaw === '' ? 0 : (int)$tableIdRaw;
+        $note = $noteRaw === '' ? null : $noteRaw;
 
         if ($tableIdRaw !== '' && (!ctype_digit($tableIdRaw) || $tableId <= 0)) {
-            header('Location: /bills/create?error=Table+ID+must+be+a+positive+integer.&table_id=' . urlencode($tableIdRaw));
+            header('Location: /bills/create?error=Table+ID+must+be+a+positive+integer.&table_id=' . urlencode($tableIdRaw) . '&note=' . urlencode($noteRaw));
             exit;
         }
 
-        $created = $this->billModel->createBill($tableId);
+        if ($note !== null && mb_strlen($note) > 255) {
+            header('Location: /bills/create?error=Note+must+be+255+characters+or+less.&table_id=' . urlencode($tableIdRaw) . '&note=' . urlencode($noteRaw));
+            exit;
+        }
+
+        $created = $this->billModel->createBill($tableId, $note);
         if (!$created) {
-            header('Location: /bills/create?error=Failed+to+create+bill.&table_id=' . urlencode($tableIdRaw));
+            header('Location: /bills/create?error=Failed+to+create+bill.&table_id=' . urlencode($tableIdRaw) . '&note=' . urlencode($noteRaw));
             exit;
         }
 
@@ -79,6 +87,11 @@ class BillsController extends Controller
         if (!$bill) {
             header('Location: /bills?error=Bill+not+found.');
             exit;
+        }
+
+        $noteQuery = $_GET['note'] ?? null;
+        if ($noteQuery !== null) {
+            $bill['note'] = $noteQuery;
         }
 
         $this->view('layouts/app', [
@@ -101,7 +114,9 @@ class BillsController extends Controller
 
         $id = (int)($_POST['id'] ?? 0);
         $tableIdRaw = trim((string)($_POST['table_id'] ?? ''));
+    $noteRaw = trim((string)($_POST['note'] ?? ''));
         $tableId = $tableIdRaw === '' ? 0 : (int)$tableIdRaw;
+    $note = $noteRaw === '' ? null : $noteRaw;
 
         if ($id <= 0) {
             header('Location: /bills?error=Invalid+bill+ID.');
@@ -109,13 +124,18 @@ class BillsController extends Controller
         }
 
         if ($tableIdRaw !== '' && (!ctype_digit($tableIdRaw) || $tableId <= 0)) {
-            header('Location: /bills/edit?id=' . $id . '&error=Table+ID+must+be+a+positive+integer.');
+            header('Location: /bills/edit?id=' . $id . '&error=Table+ID+must+be+a+positive+integer.&note=' . urlencode($noteRaw));
             exit;
         }
 
-        $updated = $this->billModel->updateBill($id, $tableId);
+        if ($note !== null && mb_strlen($note) > 255) {
+            header('Location: /bills/edit?id=' . $id . '&error=Note+must+be+255+characters+or+less.&note=' . urlencode($noteRaw));
+            exit;
+        }
+
+        $updated = $this->billModel->updateBill($id, $tableId, $note);
         if (!$updated) {
-            header('Location: /bills/edit?id=' . $id . '&error=Failed+to+update+bill.');
+            header('Location: /bills/edit?id=' . $id . '&error=Failed+to+update+bill.&note=' . urlencode($noteRaw));
             exit;
         }
 

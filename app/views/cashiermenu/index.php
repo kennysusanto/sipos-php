@@ -34,7 +34,7 @@
                     <div class="menu-card-content">
                         <h3><?= htmlspecialchars((string)($item['display_name'] ?? '')) ?></h3>
                         <p><?= nl2br(htmlspecialchars((string)($item['description'] ?? ''))) ?></p>
-                        <div class="menu-card-price">$<?= number_format((float)($item['price'] ?? 0), 2) ?></div>
+                        <div class="menu-card-price">IDR <?= number_format((float)($item['price'] ?? 0), 0, ',', '.') ?></div>
                         <div class="menu-card-meta">Stock: <?= htmlspecialchars((string)($item['stock'] ?? '0')) ?></div>
                     </div>
                 </button>
@@ -45,6 +45,10 @@
             <h3 class="cashiermenu-sidebar-title">Selected Items</h3>
             <div id="cashiermenu-cart-list" class="cashiermenu-cart-list">
                 <p class="cashiermenu-empty">No items selected.</p>
+            </div>
+            <div class="cashiermenu-cart-total">
+                <span>Total</span>
+                <strong id="cashiermenu-cart-total-value">IDR 0</strong>
             </div>
             <form method="post" action="/cashiermenu" id="cashiermenu-order-form">
                 <input type="hidden" name="cart_payload" id="cashiermenu-cart-payload" value="[]">
@@ -59,9 +63,16 @@
             const cartList = document.getElementById('cashiermenu-cart-list');
             const payloadInput = document.getElementById('cashiermenu-cart-payload');
             const orderButton = document.getElementById('cashiermenu-order-btn');
+            const totalValue = document.getElementById('cashiermenu-cart-total-value');
 
             const menuById = new Map();
             const cart = new Map();
+            const idrFormatter = new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            });
 
             cardButtons.forEach(function (button) {
                 const id = parseInt(button.getAttribute('data-id') || '0', 10);
@@ -134,6 +145,7 @@
 
             function renderCart() {
                 const payload = [];
+                let total = 0;
                 cartList.innerHTML = '';
 
                 if (cart.size === 0) {
@@ -142,6 +154,7 @@
                     empty.textContent = 'No items selected.';
                     cartList.appendChild(empty);
                     payloadInput.value = '[]';
+                    totalValue.textContent = idrFormatter.format(0);
                     orderButton.disabled = true;
                     return;
                 }
@@ -166,7 +179,9 @@
 
                     const price = document.createElement('div');
                     price.className = 'cashiermenu-cart-price';
-                    price.textContent = '$' + (menu.price * quantity).toFixed(2);
+                    const lineTotal = menu.price * quantity;
+                    total += lineTotal;
+                    price.textContent = idrFormatter.format(lineTotal);
 
                     info.appendChild(name);
                     info.appendChild(price);
@@ -203,6 +218,7 @@
                 });
 
                 payloadInput.value = JSON.stringify(payload);
+                totalValue.textContent = idrFormatter.format(total);
                 orderButton.disabled = payload.length === 0;
             }
         })();

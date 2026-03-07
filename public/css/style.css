@@ -760,6 +760,17 @@ a {
     font-weight: 600;
 }
 
+.cashiermenu-cart-total {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 10px 0 12px;
+    padding-top: 8px;
+    border-top: 1px solid var(--border);
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
 .cashiermenu-order-btn {
     width: 100%;
 }

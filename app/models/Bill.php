@@ -19,7 +19,7 @@ class Bill extends Model
             return [];
         }
 
-        $statement = $connection->query('SELECT id, table_id, created_at, updated_at FROM `bill` WHERE deleted_at IS NULL ORDER BY id DESC');
+        $statement = $connection->query('SELECT id, table_id, note, created_at, updated_at FROM `bill` WHERE deleted_at IS NULL ORDER BY id DESC');
         return $statement->fetchAll();
     }
 
@@ -30,35 +30,37 @@ class Bill extends Model
             return null;
         }
 
-        $statement = $connection->prepare('SELECT id, table_id, created_at, updated_at FROM `bill` WHERE id = :id AND deleted_at IS NULL LIMIT 1');
+        $statement = $connection->prepare('SELECT id, table_id, note, created_at, updated_at FROM `bill` WHERE id = :id AND deleted_at IS NULL LIMIT 1');
         $statement->execute(['id' => $id]);
         return $statement->fetch() ?: null;
     }
 
-    public function createBill($tableId)
+    public function createBill($tableId, $note = null)
     {
         $connection = $this->database->getConnection();
         if (!$connection) {
             return false;
         }
 
-        $statement = $connection->prepare('INSERT INTO `bill` (table_id, created_at, updated_at, deleted_at) VALUES (:table_id, NOW(), NULL, NULL)');
+        $statement = $connection->prepare('INSERT INTO `bill` (table_id, note, created_at, updated_at, deleted_at) VALUES (:table_id, :note, NOW(), NULL, NULL)');
         return $statement->execute([
-            'table_id' => $tableId > 0 ? $tableId : null
+            'table_id' => $tableId > 0 ? $tableId : null,
+            'note' => $this->normalizeNote($note)
         ]);
     }
 
-    public function updateBill($id, $tableId)
+    public function updateBill($id, $tableId, $note = null)
     {
         $connection = $this->database->getConnection();
         if (!$connection) {
             return false;
         }
 
-        $statement = $connection->prepare('UPDATE `bill` SET table_id = :table_id, updated_at = NOW() WHERE id = :id AND deleted_at IS NULL');
+        $statement = $connection->prepare('UPDATE `bill` SET table_id = :table_id, note = :note, updated_at = NOW() WHERE id = :id AND deleted_at IS NULL');
         return $statement->execute([
             'id' => $id,
-            'table_id' => $tableId > 0 ? $tableId : null
+            'table_id' => $tableId > 0 ? $tableId : null,
+            'note' => $this->normalizeNote($note)
         ]);
     }
 
@@ -73,7 +75,7 @@ class Bill extends Model
         return $statement->execute(['id' => $id]);
     }
 
-    public function createBillWithItems($tableId, array $items)
+    public function createBillWithItems($tableId, array $items, $note = null)
     {
         $connection = $this->database->getConnection();
         if (!$connection || empty($items)) {
@@ -83,9 +85,10 @@ class Bill extends Model
         try {
             $connection->beginTransaction();
 
-            $billStatement = $connection->prepare('INSERT INTO `bill` (table_id, created_at, updated_at, deleted_at) VALUES (:table_id, NOW(), NULL, NULL)');
+            $billStatement = $connection->prepare('INSERT INTO `bill` (table_id, note, created_at, updated_at, deleted_at) VALUES (:table_id, :note, NOW(), NULL, NULL)');
             $billCreated = $billStatement->execute([
-                'table_id' => $tableId > 0 ? $tableId : null
+                'table_id' => $tableId > 0 ? $tableId : null,
+                'note' => $this->normalizeNote($note)
             ]);
 
             if (!$billCreated) {
@@ -131,5 +134,15 @@ class Bill extends Model
 
             return 0;
         }
+    }
+
+    private function normalizeNote($note)
+    {
+        if ($note === null) {
+            return null;
+        }
+
+        $normalized = trim((string)$note);
+        return $normalized === '' ? null : $normalized;
     }
 }

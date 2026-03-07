@@ -32,6 +32,7 @@
                 <tr>
                     <th>ID</th>
                     <th>Table ID</th>
+                    <th>Note</th>
                     <th>Created At</th>
                     <th>Updated At</th>
                     <th>Actions</th>
@@ -42,6 +43,7 @@
                     <tr>
                         <td><?= htmlspecialchars((string)($bill['id'] ?? '')) ?></td>
                         <td><?= htmlspecialchars((string)($bill['table_id'] ?? '')) ?></td>
+                        <td><?= htmlspecialchars((string)($bill['note'] ?? '')) ?></td>
                         <td><?= htmlspecialchars((string)($bill['created_at'] ?? '')) ?></td>
                         <td><?= htmlspecialchars((string)($bill['updated_at'] ?? '')) ?></td>
                         <td>
