@@ -49,8 +49,7 @@ class Middleware
         $currentLevel = self::$roleLevels[$currentRole] ?? -1;
 
         if ($currentLevel < $requiredLevel) {
-            header('HTTP/1.1 403 Forbidden');
-            echo 'Forbidden: insufficient authorization level.';
+            header('Location: /unauthorized');
             exit;
         }
     }

@@ -33,7 +33,9 @@
         <?php foreach ($items as $item): ?>
             <article class="menu-card">
                 <?php if (empty($item['url'])): ?>
-                    <div class="menu-card-image">Image</div>
+                    <div class="menu-card-image">
+                        <div class="menu-card-image-placeholder">Image</div>
+                    </div>
                 <?php else: ?>
                     <div class="menu-card-image">
                         <img src="<?= empty($item['url']) ? '' : htmlspecialchars((string)$item['url']) ?>" />

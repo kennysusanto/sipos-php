@@ -42,4 +42,15 @@ class AuthController extends Controller
         header('Location: /login');
         exit;
     }
+
+    public function unauthorized()
+    {
+        $this->view('auth/unauthorized');
+    }
+
+    public function notFound()
+    {
+        header('HTTP/1.0 404 Not Found');
+        $this->view('auth/not-found');
+    }
 }

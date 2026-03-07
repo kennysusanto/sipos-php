@@ -8,6 +8,7 @@ require_once __DIR__ . '/../app/controllers/TenantsController.php';
 require_once __DIR__ . '/../app/controllers/MenuItemsController.php';
 require_once __DIR__ . '/../app/controllers/BillsController.php';
 require_once __DIR__ . '/../app/controllers/BillItemsController.php';
+require_once __DIR__ . '/../app/controllers/CashierMenuController.php';
 require_once __DIR__ . '/../app/core/Middleware.php';
 
 // parse requested url from PATH_INFO
@@ -25,6 +26,16 @@ $routes = [
         'controller' => AuthController::class,
         'action' => 'logout',
         'middleware' => ['auth']
+    ],
+    'unauthorized' => [
+        'controller' => AuthController::class,
+        'action' => 'unauthorized',
+        'middleware' => []
+    ],
+    'not-found' => [
+        'controller' => AuthController::class,
+        'action' => 'notFound',
+        'middleware' => []
     ],
     'dashboard' => [
         'controller' => DashboardController::class,
@@ -99,7 +110,7 @@ $routes = [
     'menuitems' => [
         'controller' => MenuItemsController::class,
         'action' => 'index',
-        'middleware' => ['auth', 'role:user']
+        'middleware' => ['auth', 'role:admin']
     ],
     'menuitems/create' => [
         'controller' => MenuItemsController::class,
@@ -128,6 +139,11 @@ $routes = [
     ],
     'bills' => [
         'controller' => BillsController::class,
+        'action' => 'index',
+        'middleware' => ['auth', 'role:user']
+    ],
+    'cashiermenu' => [
+        'controller' => CashierMenuController::class,
         'action' => 'index',
         'middleware' => ['auth', 'role:user']
     ],
@@ -189,8 +205,7 @@ $routes = [
 ];
 
 if (!isset($routes[$url])) {
-    header('HTTP/1.0 404 Not Found');
-    echo "Page not found";
+    header('Location: /not-found');
     exit;
 }
 
